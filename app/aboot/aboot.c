@@ -2303,6 +2303,7 @@ void cmd_oem_select_display_panel(const char *arg, void *data, unsigned size)
 void cmd_oem_lock(const char *arg, void *data, unsigned sz)
 {
 	struct recovery_message msg;
+	memset(&msg, 0, sizeof(msg));
 	if(device.is_unlocked)
 	{
 		device.is_unlocked = 0;
@@ -2324,6 +2325,7 @@ void cmd_oem_unlock(const char *arg, void *data, unsigned sz)
 		device.is_unlocked = 1;
 		write_device_info(&device);
 		struct recovery_message msg;
+		memset(&msg, 0, sizeof(msg));
 		snprintf(msg.recovery, sizeof(msg.recovery), "recovery\n--wipe_data");
 		write_misc(0, &msg, sizeof(msg));
 
