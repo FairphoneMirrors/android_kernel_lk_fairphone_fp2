@@ -1,4 +1,5 @@
 /* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright 2018 Fairphone B.V.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -42,6 +43,7 @@
 #include <baseband.h>
 #include <dev/keys.h>
 #include <pm8x41.h>
+#include <target/rgb_led.h>
 #include <crypto5_wrapper.h>
 #include <hsusb.h>
 #include <clock.h>
@@ -465,6 +467,17 @@ void target_fastboot_init(void)
 	clock_ce_enable(SSD_CE_INSTANCE_1);
 	ssd_load_keystore_from_emmc();
 #endif
+
+	/* Vibration pattern, 3 fast vibes in a row */
+	vibrator_enable();
+	thread_sleep(150);
+	vibrator_enable();
+	thread_sleep(150);
+	vibrator_enable();
+	thread_sleep(150);
+	/* Enable blinking of Blue LED */
+	led_init();
+	led_blink_enable(RGB_LED_VALUE_BLUE, 0x06, 0x2C); // 0x06 means 0.25 KHz PWM frequency (4 secs duty cycle duration), 0x2C means about 70% of the duty cycle
 }
 
 /* Detect the target type */
